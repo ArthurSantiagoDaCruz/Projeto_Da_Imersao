@@ -1,0 +1,1023 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM6Vnev7+pAcwI4q0fZQRYM",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/ArthurSantiagoDaCruz/Projeto_Da_Imersao/blob/main/Projeto%20da%20Imers%C3%A3o\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 60,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3gKx6LXgcpJA",
+        "outputId": "24ea2a05-e5f8-4699-9632-f29ce75c1fd0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Usage:   \n",
+            "  pip3 install [options] <requirement specifier> [package-index-options] ...\n",
+            "  pip3 install [options] -r <requirements file> [package-index-options] ...\n",
+            "  pip3 install [options] [-e] <vcs project url> ...\n",
+            "  pip3 install [options] [-e] <local project path> ...\n",
+            "  pip3 install [options] <archive url/path> ...\n",
+            "\n",
+            "no such option: -u\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install -q -u google-generativeai"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import google.generativeai as genai\n",
+        "\n",
+        "GOOGLE_API_KEY=\"AIzaSyBHQJDO7m6f8zt8YDDdEYd3j9I2gNIQJ5k\"\n",
+        "genai.configure(api_key=GOOGLE_API_KEY)"
+      ],
+      "metadata": {
+        "id": "_zBaqfZtcu-0"
+      },
+      "execution_count": 61,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for m in genai.list_models():\n",
+        "  if'generateContent' in m.supported_generation_methods:\n",
+        "    print(m.name)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 138
+        },
+        "id": "DymTbOVpcxw0",
+        "outputId": "fbfbf65b-9f8e-49c7-e9e7-19050927677d"
+      },
+      "execution_count": 62,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "models/gemini-1.0-pro\n",
+            "models/gemini-1.0-pro-001\n",
+            "models/gemini-1.0-pro-latest\n",
+            "models/gemini-1.0-pro-vision-latest\n",
+            "models/gemini-1.5-pro-latest\n",
+            "models/gemini-pro\n",
+            "models/gemini-pro-vision\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "generation_config = {\n",
+        "    \"candidate_count\": 1,\n",
+        "    \"temperature\": 1.0,\n",
+        "}"
+      ],
+      "metadata": {
+        "id": "kbcLC2Svc0cD"
+      },
+      "execution_count": 63,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "safety_settings = {\n",
+        "    \"Harassment\": \"BLOCK_NONE\",\n",
+        "    \"Hate\": \"BLOCK_NONE\",\n",
+        "    \"Sexual\": \"BLOCK_NONE\",\n",
+        "    \"Dangerous\": \"BLOCK_NONE\",\n",
+        "}"
+      ],
+      "metadata": {
+        "id": "B2p3MzWkc45Z"
+      },
+      "execution_count": 64,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model = genai.GenerativeModel(model_name=\"gemini-1.0-pro\",\n",
+        "                              generation_config=generation_config,\n",
+        "                              safety_settings=safety_settings)"
+      ],
+      "metadata": {
+        "id": "Xk5ydy16c8SU"
+      },
+      "execution_count": 65,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "chat = model.start_chat(history=[])"
+      ],
+      "metadata": {
+        "id": "Z0J_k8ApdA3d"
+      },
+      "execution_count": 66,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install -U -q google-generativeai"
+      ],
+      "metadata": {
+        "id": "P3y-EM0HhK5n"
+      },
+      "execution_count": 67,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import google.generativeai as genai\n",
+        "\n",
+        "GOOGLE_API_KEY=\"AIzaSyBHQJDO7m6f8zt8YDDdEYd3j9I2gNIQJ5k\"\n",
+        "genai.configure(api_key=GOOGLE_API_KEY)"
+      ],
+      "metadata": {
+        "id": "gr3Ck3ZyhR4q"
+      },
+      "execution_count": 68,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "for m in genai.list_models():\n",
+        "  if 'embedContent' in m.supported_generation_methods:\n",
+        "    print(m.name)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 52
+        },
+        "id": "lx-o83BehcKB",
+        "outputId": "84d6d5b3-90cd-49ef-c6d8-72b2ad51a7cc"
+      },
+      "execution_count": 69,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "models/embedding-001\n",
+            "models/text-embedding-004\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "title = \"A depressão\"\n",
+        "sample_text = (\"Título: A depressão\"\n",
+        "    \"\\n\"\n",
+        "    \"Artigo completo:\\n\"\n",
+        "    \"\\n\"\n",
+        "    \"Gemini API & Albido: Uma maneira incrivel de lutar contra a depressão\")\n",
+        "\n",
+        "embeddings = genai.embed_content(model=\"models/embedding-001\",\n",
+        "                                 content=sample_text,\n",
+        "                                 title=title,\n",
+        "                                 task_type=\"RETRIEVAL_DOCUMENT\")\n",
+        "\n",
+        "print(embeddings)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 54
+        },
+        "id": "AC6FQTkahiT6",
+        "outputId": "e359a667-3f0b-4d87-d227-b9239c64b458"
+      },
+      "execution_count": 70,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'embedding': [0.043508653, -0.041061375, -0.019481132, 0.020855691, 0.08415713, -0.0092167435, -0.04247758, -0.029473227, 0.026994556, 0.032393523, -0.016679743, -0.022264045, -0.051786605, -0.037797764, 0.021444391, -0.02234474, 0.0045157657, 0.03773825, -0.012302344, 0.016897675, -0.012085991, 0.01504125, -0.03615068, -0.049547803, 0.012146746, -0.019797236, 0.04125034, -0.032295167, -0.07465868, 0.0434964, -0.04787145, 0.046331383, -0.019594602, 0.04643878, 0.015448989, -0.060378958, -0.02446574, -0.0152523415, -0.0004574361, 0.016380105, -0.009272972, -0.056483965, -0.00043151178, 0.024789277, 0.0022169056, -0.0052342215, 0.020566132, 0.02902968, 0.0343893, -0.053385895, 0.02363499, 0.025164971, 0.088352785, -0.025068598, 0.0027890422, -0.00957678, 0.042981405, -0.021750024, -0.022483004, -0.001402119, -0.0025562122, 0.020386774, 0.020014629, 0.059054587, 0.010484026, -0.056514107, -0.021047883, 0.014410782, 0.06827392, -0.008107699, -0.010097597, -0.004952264, 0.0087635545, -0.021825183, -0.01624887, -0.093080364, 0.009608852, 0.07621335, 0.03157652, -0.0069548246, 0.030454312, -0.12127278, -0.036464076, -0.048738923, -0.06608309, 0.027100395, -0.046236705, 0.029968461, -0.0090685785, 0.017216375, -0.025924848, -0.059731435, 0.06238536, -0.0582564, -0.016785659, 0.123059, -0.050714232, -0.026967399, -0.045145314, -0.017196888, 0.036676563, -0.014000561, -0.050323967, 0.0066679027, 0.022974687, 0.024880137, 0.013592632, 0.034259547, 0.005055496, 0.078646176, -0.04809854, -0.019430563, 0.035254568, -0.050948296, 0.07080578, -0.0007812502, -0.008643648, 0.020150399, 0.01793391, 0.054531984, 0.042028774, 0.0044925692, 0.041232772, -0.009023332, 0.0048839017, 0.031687267, 0.004235927, 0.03601242, 0.04159754, -0.012336015, 0.016909277, -0.015480303, 0.015080188, 0.017530477, 0.05856129, 0.049493156, -0.04745083, -0.031947628, 0.017902, 0.00882861, -0.009660933, 0.009320194, -0.008242176, 0.0018196722, 0.02316722, 0.082868375, -0.043977648, -0.03744065, 0.06632601, 0.02851972, 0.011706228, -0.0028544427, -0.052285593, -0.012691814, 0.09111329, 0.03386827, 0.0016402113, -0.012933345, 0.041150883, 0.016468681, 0.059199847, 0.036182784, 0.017000914, 0.03214359, -0.0073261256, -0.04189251, -0.033924274, -0.0014804555, 0.031742714, 0.0008132319, 0.015342991, 0.022871459, -0.04309469, -0.086255245, 0.010107415, -0.035178196, -0.0031424593, 0.029085647, -0.038723376, -0.008681044, -0.04843282, -0.033469774, -0.005658828, 0.07106386, 0.029175727, -0.046109032, 0.051507387, -0.019657291, -0.06115845, 0.027025374, -0.008162224, -0.0093513895, -0.0076108407, -0.012859722, -0.031865273, 0.038275685, -0.01107503, 0.036098745, 0.0029504758, -0.040628977, -0.034745242, 0.020001763, -0.017929822, -0.009912678, -0.003913985, -0.005225588, 0.06249084, -0.027930522, -0.04314065, 0.040593408, -0.09393142, -0.0038975552, -0.0040691686, 0.024742741, 0.009908688, 0.02612672, -0.04210877, 0.023620209, 0.008406841, -0.045271322, -0.080461055, 0.002150251, -0.02587683, -0.00928282, -0.029599736, 0.06258232, -0.03851478, 0.042156473, -0.023094654, -0.07534803, 0.00079972047, 0.03040766, 0.07201436, -0.002942619, 0.08745442, 0.014727724, 0.029060123, 0.013636979, -0.005351054, 0.0028793656, -0.05353353, 0.06009004, 0.021898303, -0.002041153, -0.052447613, -0.04917436, 0.009581846, 0.08815924, -0.009351495, 0.036497228, -0.012791083, -0.02866919, 0.010628302, 0.02910115, -0.04122373, 0.012149613, -0.07183768, -0.015458852, 0.014874304, -0.00087244017, 0.033780504, -0.06822142, -0.006406536, -0.0223056, -0.00530142, -0.029510146, 0.0147162825, -0.030438347, -0.019805767, 0.04968031, -0.0028595522, -0.03518216, 0.04180478, -0.012186425, 0.01165323, 0.009799448, -0.0355424, 0.04257524, 0.03214568, -0.07747131, -0.015223665, 0.01521983, 0.051039513, -0.07366049, -0.022133669, -0.023226453, -0.014785029, -0.08870118, 0.008691876, -0.04084541, -0.05433749, -0.008739174, 0.023112126, -0.043454405, -0.043274604, 0.010607477, -0.0074135866, 0.033657175, 0.014503914, -0.033094436, -0.013507879, -0.034600813, -0.009905634, -0.082439646, -0.025337089, -0.032737475, 0.034877438, -0.018055843, 0.025044354, 0.038237404, 0.009221607, -0.033167344, 0.00026617755, 0.007073994, 0.07954081, 0.051281575, -0.032890067, 0.038167574, -0.043336943, 0.058844127, 0.010060443, 0.056686513, 0.013410702, 0.011233103, -0.0036987292, 0.055777743, -0.0255069, 0.0012799135, -0.013959525, 0.026192646, -0.0038887607, -0.0288233, -0.016784059, 0.04316108, -0.027962396, 0.011803956, -0.062991895, 0.012960071, -0.010418865, -0.000953769, 0.005610417, 0.034974333, -0.029894056, -0.043570954, 0.005534868, -0.028511146, -0.048621528, -0.007137028, 0.04305643, 0.05408714, -0.008509519, 0.05608137, -0.025177296, 0.005897411, -0.0010844644, -0.0076525556, 0.038874354, -0.041692235, 0.06737296, 0.009533336, 5.3205895e-05, 0.05932334, -0.02173077, -0.0105725825, -0.0059209433, -0.009540676, -0.051537875, -0.0108292205, 0.0068094614, 0.0010564661, 0.027601143, 0.009573001, -0.011778746, -0.008549032, 0.031574678, -0.043474585, -0.0071726674, -0.06937605, -0.0011301696, 0.0021036167, -0.0022012247, -0.07793864, 0.021625785, 0.026390525, -0.026856914, 0.030881783, 0.010050866, 0.05661286, 0.00083667244, 0.043433923, -0.0013168294, 0.014823819, 0.062289894, 0.054498103, -0.007593032, 0.003186234, -0.0013525481, -0.06426635, 0.0058655394, -0.007612492, -0.05547684, -0.0104986485, -0.021217842, 0.0002180726, -0.018511469, 0.006347312, -0.019913565, -0.038258184, -0.008045081, -0.03083736, -0.0155980745, 0.015507831, 0.010795953, -0.04917105, -0.060486518, -0.0094385445, 0.023908721, 0.0043578483, 0.009268059, 0.0057055177, -0.003221619, -0.007437256, 0.03320142, -0.018632716, -0.06627226, -0.011798395, 0.034672063, -0.039391175, -0.009267507, 0.0393384, 0.023585325, 0.02779591, -0.032052573, 0.023992175, -0.008792874, -0.03823608, 0.007811417, -0.03180971, -2.0065678e-05, 0.005622729, 0.05443671, -0.006036254, -0.02765418, 0.02265495, -0.05118101, -0.06653595, -0.040971335, -0.030110383, 0.02685956, -0.062158674, 0.039541166, -0.034734853, -0.0351695, -0.06064619, -0.04551026, 0.0070785345, -0.055090085, 0.034464497, -0.020132815, -0.0021667543, 0.0077022556, -0.009688661, -0.018565483, -0.026695792, 0.054815073, 0.027801737, -0.015311196, 0.01740398, 0.017461557, 0.0400403, 0.0043045543, -0.06265786, 0.0135102635, -0.072285816, -0.0028673396, 0.034566026, -0.049765166, 0.005448583, -0.04210035, -0.02074882, 0.0023015866, 0.036374442, 0.048827626, -0.014438224, -0.028786276, -0.0069934623, 0.0072207544, -0.0043166275, 0.014072346, 0.024310036, 0.010142017, -0.0192017, -0.07425367, -0.048231263, -0.046003453, 0.016868053, -0.06975076, 0.015292337, 0.03881734, 0.032247145, 0.06207734, 0.010473621, -0.013520014, -0.0013490965, 0.06783479, -0.09692884, 0.008843276, 0.005495049, 0.008381465, -0.00585271, 0.008962595, 0.017998122, 0.0063064075, -0.0013105712, 0.043589417, -0.037255287, 0.012785235, 0.055831224, 0.011976311, 0.025482655, 0.028073054, -0.028196493, -0.058707252, 0.0089117, 0.04302299, -0.043462038, 0.035187826, 0.001373935, -0.038261823, 0.032500304, -0.017199848, 0.0882582, -0.024636589, -0.022825953, 0.011131542, 0.03007557, 0.03605091, 0.019579874, -0.0015814552, 0.0080610085, 0.010325694, -0.015556808, 0.021173565, 0.032316748, -0.07390603, -0.012015716, -0.005606574, -0.043902732, -0.000921858, -0.045107, -0.029580735, 0.0018991736, 0.027562061, -0.0063507236, 0.042606357, 0.002111647, -0.016636053, -0.007549987, 0.03387499, 0.00085075607, 0.019116895, -0.0066866223, -0.047963876, -0.017415632, 0.07943931, 0.005613491, -0.028884089, 0.0045889905, 0.05941489, -0.049706522, -0.021781452, 0.03181412, 0.03907554, 0.01146328, 0.029932072, -0.020950591, -0.034388773, 0.021176325, -0.029109785, -0.042534575, 0.014834561, 0.003378472, 0.020839468, 0.018884713, -0.003217425, 0.020277414, 0.0008472125, 0.006544842, 0.052946713, 0.013780917, -0.08075112, 0.05288532, 0.0051888265, 0.010905892, -0.040196106, -0.040253747, 0.015344582, -0.014228383, 0.021953665, -0.008759135, -0.008901144, -0.022033643, 0.075890884, -0.012264079, 0.06964526, 0.024399977, -0.017882895, 0.026463978, 0.0069197034, 0.0024361918, -0.007745549, -0.066965275, 0.0028392982, -0.0125178965, -0.043040898, -0.017066002, 0.046117805, -0.020003507, -0.05714018, -0.032568604, 0.0029628293, 0.0097021, 0.008868714, 0.0041450057, 0.061767288, 0.009108439, -0.029274222, -0.0098548075, 0.059116565, 0.03568993, 0.045511607, 0.06869089, 0.016593823, 0.0004578056, -0.05852631, 0.007639798, 0.024280136, 0.070157826, 0.041806895, -0.010608745, -0.044020854, 0.006678654, 0.015573652, 0.00030301476, -0.04532558, 0.060292423, 0.008682851, -0.08405868, -0.043497384, 0.0015063476, 0.016891986, -0.00043894045, 0.005656604, -0.028459122, 0.023872871, -0.06627988, -0.06490152, -0.04239882, 0.026430715, 0.020073146, -0.059041146, -0.0017368067, 0.0059985304, -0.019808523, -0.032241106, -0.024362495, -0.05317708, -0.08686541, -0.014121523, 0.030632436, -0.054959867, 0.06275656, 0.047199406, -0.035675198, 0.062342327, 0.020314813, -0.024746787, 0.005939577, -0.023275608, -0.023801178, 0.002092353, -0.0082884515, -0.0054603457, -0.026355145, -0.048112974, 0.041337997, 0.040671512, 0.036628492, 0.012475913, -0.0113857025, 0.011769311, -0.03906796, -0.010544936, 0.008933611, 0.028379826, -0.027704347, -0.035905015, -0.031799994, 0.039536178, 0.013793275, 0.005442901, -0.03994939, -0.03865689, 0.017693039, 0.043525223, 0.008518208, -0.012958065, -0.031909637, 0.025395662, 0.050206784, 0.04754165, -0.0069830306, -0.039884392, 0.025025148, -0.041802183, -0.026583022, -0.053198606, 0.04188734, -0.009693465, 0.06759754, 0.031051386, 0.005794001, 0.028978767, 0.005713409, 0.009719436, -0.009102609, 0.0056476835, -0.004520447, -0.04512551, -0.038394403, 0.06467761, -0.028842201, -0.04469894, -0.0014787521, -0.045849398, 0.08770927, -0.012564376, 0.016615003, -0.064944945, -0.08028056, -0.002683814, 0.0030640948, 0.027407933, 0.07607623, 0.011686044, -0.032484315, 0.0026513427, -0.04794599, -0.061178595, -0.046638258, -0.032602195, -0.06339431, 0.0013348522, 0.034748074, 0.0069550173, -0.022135094, -0.007963454, -0.05998601, -0.0053987964, -0.024594733, -0.062138487, -0.0022603658, 0.0012085568, -0.011723194, -0.01069475, 0.07317102, -0.035762478, -0.012422284]}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "DOCUMENT1 = {\n",
+        "    \"Título\": \"Tipo 1 de depressão\",\n",
+        "    \"Conteúdo\": \"A depressão na fase 1, a pessoa só pensa em momentos ruins da vida dela, para lidar com isso faça piadas, seja descontraido, mas não agressivo.\"}\n",
+        "\n",
+        "DOCUMENT2 = {\n",
+        "    \"Título\": \"Tipo 2 de depresão\",\n",
+        "    \"Conteúdo\": \"A depressão na fase 2, a pessoa pensa nos momentos ruins da vida dela e pensa um pouquinho em tirar a propria vida, para lidar com isso faça piadas, seja descontraido, mas não agressivo.\"}\n",
+        "\n",
+        "DOCUMENT3 = {\n",
+        "    \"Título\": \"Tipo 3 de depressão\",\n",
+        "    \"Conteúdo\": \"A depressão tipo 3, a pessoa vai ser mais agresiva com ela, vai tentar se matar, para lidar com isso faça piadas, seja descontraido, mas não agressivo.\"}\n",
+        "\n",
+        "documents = [DOCUMENT1, DOCUMENT2, DOCUMENT3]"
+      ],
+      "metadata": {
+        "id": "J7uxNIEhh8Qo"
+      },
+      "execution_count": 71,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df = pd.DataFrame(documents)\n",
+        "df.columns = [\"Titulo\", \"Conteudo\"]\n",
+        "df"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 143
+        },
+        "id": "XCqkxrAXjlOj",
+        "outputId": "429d7378-3da7-40a6-825d-f993e4688c61"
+      },
+      "execution_count": 72,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "                Titulo                                           Conteudo\n",
+              "0  Tipo 1 de depressão  A depressão na fase 1, a pessoa só pensa em mo...\n",
+              "1   Tipo 2 de depresão  A depressão na fase 2, a pessoa pensa nos mome...\n",
+              "2  Tipo 3 de depressão  A depressão tipo 3, a pessoa vai ser mais agre..."
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-37941dbd-894d-4f74-a388-e24e36e48135\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Titulo</th>\n",
+              "      <th>Conteudo</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>Tipo 1 de depressão</td>\n",
+              "      <td>A depressão na fase 1, a pessoa só pensa em mo...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>Tipo 2 de depresão</td>\n",
+              "      <td>A depressão na fase 2, a pessoa pensa nos mome...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>Tipo 3 de depressão</td>\n",
+              "      <td>A depressão tipo 3, a pessoa vai ser mais agre...</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-37941dbd-894d-4f74-a388-e24e36e48135')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-37941dbd-894d-4f74-a388-e24e36e48135 button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-37941dbd-894d-4f74-a388-e24e36e48135');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "<div id=\"df-7aed7bfe-70d8-42c9-b0b5-b5eb7e4f910f\">\n",
+              "  <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-7aed7bfe-70d8-42c9-b0b5-b5eb7e4f910f')\"\n",
+              "            title=\"Suggest charts\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "  </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "  <script>\n",
+              "    async function quickchart(key) {\n",
+              "      const quickchartButtonEl =\n",
+              "        document.querySelector('#' + key + ' button');\n",
+              "      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "      quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "      try {\n",
+              "        const charts = await google.colab.kernel.invokeFunction(\n",
+              "            'suggestCharts', [key], {});\n",
+              "      } catch (error) {\n",
+              "        console.error('Error during call to suggestCharts:', error);\n",
+              "      }\n",
+              "      quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "      quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "    }\n",
+              "    (() => {\n",
+              "      let quickchartButtonEl =\n",
+              "        document.querySelector('#df-7aed7bfe-70d8-42c9-b0b5-b5eb7e4f910f button');\n",
+              "      quickchartButtonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "    })();\n",
+              "  </script>\n",
+              "</div>\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "variable_name": "df",
+              "summary": "{\n  \"name\": \"df\",\n  \"rows\": 3,\n  \"fields\": [\n    {\n      \"column\": \"Titulo\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 3,\n        \"samples\": [\n          \"Tipo 1 de depress\\u00e3o\",\n          \"Tipo 2 de depres\\u00e3o\",\n          \"Tipo 3 de depress\\u00e3o\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Conteudo\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 3,\n        \"samples\": [\n          \"A depress\\u00e3o na fase 1, a pessoa s\\u00f3 pensa em momentos ruins da vida dela, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\",\n          \"A depress\\u00e3o na fase 2, a pessoa pensa nos momentos ruins da vida dela e pensa um pouquinho em tirar a propria vida, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\",\n          \"A depress\\u00e3o tipo 3, a pessoa vai ser mais agresiva com ela, vai tentar se matar, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 72
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model = \"models/embedding-001\""
+      ],
+      "metadata": {
+        "id": "MBNVHaYZj5fD"
+      },
+      "execution_count": 73,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def embed_fn(title, text):\n",
+        "  return genai.embed_content(model=model,\n",
+        "                                 content=text,\n",
+        "                                 title=title,\n",
+        "                                 task_type=\"RETRIEVAL_DOCUMENT\")[\"embedding\"]"
+      ],
+      "metadata": {
+        "id": "r4y0IehBkB7y"
+      },
+      "execution_count": 74,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df[\"Embeddings\"] = df.apply(lambda row: embed_fn(row[\"Titulo\"], row[\"Conteudo\"]), axis=1)\n",
+        "df"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 143
+        },
+        "id": "cHoGI-zCkGA2",
+        "outputId": "e52d0a1a-ff1e-4c50-b0e3-2a83eb970371"
+      },
+      "execution_count": 75,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "                Titulo                                           Conteudo  \\\n",
+              "0  Tipo 1 de depressão  A depressão na fase 1, a pessoa só pensa em mo...   \n",
+              "1   Tipo 2 de depresão  A depressão na fase 2, a pessoa pensa nos mome...   \n",
+              "2  Tipo 3 de depressão  A depressão tipo 3, a pessoa vai ser mais agre...   \n",
+              "\n",
+              "                                          Embeddings  \n",
+              "0  [0.021264372, -0.029189935, 0.0020550722, -0.0...  \n",
+              "1  [0.024081595, -0.022585314, 0.00179772, -0.000...  \n",
+              "2  [0.025720356, -0.0315374, 0.007682362, 0.00635...  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-24790bd8-b8b9-4655-b09d-c260a87b59d0\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Titulo</th>\n",
+              "      <th>Conteudo</th>\n",
+              "      <th>Embeddings</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>Tipo 1 de depressão</td>\n",
+              "      <td>A depressão na fase 1, a pessoa só pensa em mo...</td>\n",
+              "      <td>[0.021264372, -0.029189935, 0.0020550722, -0.0...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>Tipo 2 de depresão</td>\n",
+              "      <td>A depressão na fase 2, a pessoa pensa nos mome...</td>\n",
+              "      <td>[0.024081595, -0.022585314, 0.00179772, -0.000...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>Tipo 3 de depressão</td>\n",
+              "      <td>A depressão tipo 3, a pessoa vai ser mais agre...</td>\n",
+              "      <td>[0.025720356, -0.0315374, 0.007682362, 0.00635...</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-24790bd8-b8b9-4655-b09d-c260a87b59d0')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-24790bd8-b8b9-4655-b09d-c260a87b59d0 button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-24790bd8-b8b9-4655-b09d-c260a87b59d0');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "<div id=\"df-d551078a-751d-4cd3-b4a0-3d696d515459\">\n",
+              "  <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-d551078a-751d-4cd3-b4a0-3d696d515459')\"\n",
+              "            title=\"Suggest charts\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "  </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "  <script>\n",
+              "    async function quickchart(key) {\n",
+              "      const quickchartButtonEl =\n",
+              "        document.querySelector('#' + key + ' button');\n",
+              "      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "      quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "      try {\n",
+              "        const charts = await google.colab.kernel.invokeFunction(\n",
+              "            'suggestCharts', [key], {});\n",
+              "      } catch (error) {\n",
+              "        console.error('Error during call to suggestCharts:', error);\n",
+              "      }\n",
+              "      quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "      quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "    }\n",
+              "    (() => {\n",
+              "      let quickchartButtonEl =\n",
+              "        document.querySelector('#df-d551078a-751d-4cd3-b4a0-3d696d515459 button');\n",
+              "      quickchartButtonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "    })();\n",
+              "  </script>\n",
+              "</div>\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "variable_name": "df",
+              "summary": "{\n  \"name\": \"df\",\n  \"rows\": 3,\n  \"fields\": [\n    {\n      \"column\": \"Titulo\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 3,\n        \"samples\": [\n          \"Tipo 1 de depress\\u00e3o\",\n          \"Tipo 2 de depres\\u00e3o\",\n          \"Tipo 3 de depress\\u00e3o\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Conteudo\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 3,\n        \"samples\": [\n          \"A depress\\u00e3o na fase 1, a pessoa s\\u00f3 pensa em momentos ruins da vida dela, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\",\n          \"A depress\\u00e3o na fase 2, a pessoa pensa nos momentos ruins da vida dela e pensa um pouquinho em tirar a propria vida, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\",\n          \"A depress\\u00e3o tipo 3, a pessoa vai ser mais agresiva com ela, vai tentar se matar, para lidar com isso fa\\u00e7a piadas, seja descontraido, mas n\\u00e3o agressivo.\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Embeddings\",\n      \"properties\": {\n        \"dtype\": \"object\",\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 75
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def gerar_e_buscar_consulta(consulta, base, model):\n",
+        "  embedding_da_consulta = genai.embed_content(model=model,\n",
+        "                                 content=consulta,\n",
+        "                                 task_type=\"RETRIEVAL_QUERY\")[\"embedding\"]\n",
+        "\n",
+        "  produtos_escalares = np.dot(np.stack(df[\"Embeddings\"]), embedding_da_consulta)\n",
+        "\n",
+        "  indice = np.argmax(produtos_escalares)\n",
+        "  return df.iloc[indice][\"Conteudo\"]"
+      ],
+      "metadata": {
+        "id": "V2y8Gq94kOa7"
+      },
+      "execution_count": 76,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "consulta = \"Como faço para indentificar a depressão?\"\n",
+        "\n",
+        "trecho = gerar_e_buscar_consulta(consulta, df, model)\n",
+        "print(trecho)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 54
+        },
+        "id": "MYT-qQVPkVwY",
+        "outputId": "ce08d808-3445-4b31-9b78-32bb16915ef8"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "A depressão na fase 2, a pessoa pensa nos momentos ruins da vida dela e pensa um pouquinho em tirar a propria vida, para lidar com isso faça piadas, seja descontraido, mas não agressivo.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "generation_config = {\n",
+        "  \"temperature\": 0,\n",
+        "  \"candidate_count\": 1\n",
+        "}"
+      ],
+      "metadata": {
+        "id": "mX7kgughkhLc"
+      },
+      "execution_count": 77,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "prompt = f\"Reescreva esse texto de uma forma mais descontraída, sem adicionar informações que não façam parte do texto: {trecho}\"\n",
+        "\n",
+        "model_2 = genai.GenerativeModel(\"gemini-1.0-pro\",\n",
+        "                                generation_config=generation_config)\n",
+        "response = model_2.generate_content(prompt)\n",
+        "print(response.text)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 54
+        },
+        "id": "NvVPBK79kraI",
+        "outputId": "b49620df-d8ca-4d60-c6ee-a9bdda6297d9"
+      },
+      "execution_count": 78,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\"Bora lá, galera! Se você tá naquela fase meio pra baixo, onde só lembra das coisas ruins e até pensa em dar um tchau pra vida, não se desespere! Vamos dar a volta por cima com umas piadas e um sorriso no rosto. Nada de agressividade, só good vibes e risadas pra espantar essa tristeza!\"\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "prompt = input(\"Esperando Prompt: \")\n",
+        "\n",
+        "while prompt != \"Fim\":\n",
+        "  response = chat.send_message(prompt)\n",
+        "  print(\"Resposta: \", response.text, \"\\n\")\n",
+        "  prompt = input(\"Esperando Prompt: \")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 329
+        },
+        "id": "w8xuRtYhqLEq",
+        "outputId": "3fbb9e0a-7c47-4928-e410-f478333aade7"
+      },
+      "execution_count": 80,
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Esperando Prompt: 5*9\n",
+            "Resposta:  **5 * 9 = 45**\n",
+            "\n",
+            "Aqui está a multiplicação passo a passo:\n",
+            "\n",
+            "```\n",
+            "5 x 9 = 45\n",
+            "```\n",
+            "\n",
+            "**Multiplicação de algarismos únicos:**\n",
+            "\n",
+            "* Multiplicamos o primeiro dígito de 5 (que é 5) pelo primeiro dígito de 9 (que é 9). Isso nos dá 45.\n",
+            "\n",
+            "**Resposta final:**\n",
+            "\n",
+            "O resultado final da multiplicação 5 * 9 é 45. \n",
+            "\n",
+            "Esperando Prompt: Fim\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
